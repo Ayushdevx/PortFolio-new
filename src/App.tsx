@@ -6,6 +6,7 @@ import ProjectsSection from './components/ProjectsSection';
 import ContactSection from './components/ContactSection';
 import AchievementsSection from './components/AchievementsSection';
 import BlogSection from './components/BlogSection';
+import GameHub from './components/GameHub';
 import Footer from './components/Footer';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
       <HeroSection />
       <SkillsSection />
       <ProjectsSection />
+      <GameHub />
       <AchievementsSection />
       <BlogSection />
       <ContactSection />
