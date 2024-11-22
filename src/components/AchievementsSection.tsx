@@ -9,23 +9,37 @@ const achievementsData = [
   {
     icon: <Award />,
     title: "Best Hackathon Project",
-    description: "Winner at Tech Innovators Hackathon 2023",
-    year: 2023,
+    description: "1st Winner at Skribble pad hackathon  ",
+    year: 2024,
     category: "Competition",
     stats: {
       participants: "500+",
-      prize: "$10,000",
-      teamSize: 4
+      prize: "Rs 20,000",
+      teamSize: 3
     },
     color: "from-amber-400 to-orange-500",
     link: "#",
     tags: ["Hackathon", "Innovation", "First Place"]
+  }, {
+    icon: <Award />,
+    title: "VOYAGE HACKATHON",
+    description: "BIGGEST Entrepreneurship HACKATHON AND ESUMIT  ",
+    year: 2024,
+    category: "Competition",
+    stats: {
+      participants: "3000+",
+      prize: "Rs 25,000",
+      teamSize: 4
+    },
+    color: "from-amber-400 to-orange-500",
+    link: "#",
+    tags: ["Hackathon", "Innovation", "THIRD Place"]
   },
   {
     icon: <Trophy />,
-    title: "Top Performer",
-    description: "Outstanding Performance in Web Development",
-    year: 2022,
+    title: "CLUB WEBSITE ",
+    description: "MADE WEBSITE FOR CLUBS LIKE FYI,IEEE RAS,ENACTUS,MICROSOFT STUDENT INNOVATION CLUB",
+    year: 2024,
     category: "Professional",
     stats: {
       projects: "25+",
@@ -40,7 +54,7 @@ const achievementsData = [
     icon: <Star />,
     title: "Open Source Contributor",
     description: "Major contributions to community projects",
-    year: 2021,
+    year: 2023,
     category: "Community",
     stats: {
       commits: "500+",
