@@ -1,18 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Github, Linkedin, Twitter, 
-  Send, Code, Star, Zap, 
-  Award, Rocket, Globe, 
-  Cpu, MessageCircle, ArrowRight 
+  Send, ExternalLink, Sparkles
 } from 'lucide-react';
-import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
 export default function UltimatePortfolioFooter() {
   const [activeInteraction, setActiveInteraction] = useState(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const cursorX = useMotionValue(0);
-  const cursorY = useMotionValue(0);
+  const [isHoveringCta, setIsHoveringCta] = useState(false);
 
   // Intersection Observer
   const [footerRef, inView] = useInView({
@@ -20,21 +17,21 @@ export default function UltimatePortfolioFooter() {
     threshold: 0.1
   });
 
-  // Starry Background Particles
+  // Enhanced Starry Background
   const generateStars = () => {
-    return Array.from({ length: 100 }, (_, i) => ({
+    return Array.from({ length: 150 }, (_, i) => ({
       id: i,
       x: Math.random() * window.innerWidth,
       y: Math.random() * 300,
-      size: Math.random() * 2 + 0.5,
+      size: Math.random() * 3 + 0.5,
       opacity: Math.random() * 0.7 + 0.3,
-      delay: Math.random() * 2
+      delay: Math.random() * 2,
+      duration: Math.random() * 3 + 2
     }));
   };
 
   const [stars, setStars] = useState(generateStars());
 
-  // Social and Interaction Links
   const socialLinks = [
     {
       icon: Github,
@@ -59,43 +56,30 @@ export default function UltimatePortfolioFooter() {
     }
   ];
 
-  const interactionSections = [
-    { 
-      icon: Rocket, 
-      href: "#projects",
-      title: "Projects", 
-      description: "Innovative tech solutions showcasing creative problem-solving",
-      gradient: "from-purple-600 to-indigo-500"
-    },
-    { 
-      icon: Award, 
-      title: "Achievements", 
-      description: "Recognized milestones and professional accomplishments",
-      gradient: "from-green-500 to-emerald-400"
-    },
-    { 
-      icon: Globe, 
-      title: "Expertise", 
-      description: "Cutting-edge technologies and specialized skills",
-      gradient: "from-pink-500 to-red-500"
+  // Floating animation for CTA button
+  const floatingAnimation = {
+    y: [0, -10, 0],
+    transition: {
+      duration: 3,
+      repeat: Infinity,
+      ease: "easeInOut"
     }
-  ];
-
-  // Interactive cursor effect
-  const handleMouseMove = (e) => {
-    const { clientX, clientY } = e;
-    setMousePosition({ x: clientX, y: clientY });
-    cursorX.set(clientX);
-    cursorY.set(clientY);
   };
+
+  // Sparkle positions for CTA button
+  const sparklePositions = [
+    { x: -20, y: -20 },
+    { x: 20, y: -20 },
+    { x: -20, y: 20 },
+    { x: 20, y: 20 }
+  ];
 
   return (
     <footer 
       ref={footerRef}
-      onMouseMove={handleMouseMove}
-      className="relative bg-black text-white overflow-hidden py-16"
+      className="relative bg-gradient-to-b from-black via-gray-900 to-black text-white overflow-hidden py-16"
     >
-      {/* Starry Background */}
+      {/* Enhanced Starry Background */}
       <div className="absolute inset-0 pointer-events-none">
         {stars.map((star) => (
           <motion.div
@@ -103,13 +87,15 @@ export default function UltimatePortfolioFooter() {
             initial={{ 
               x: star.x, 
               y: -50,
-              opacity: 0
+              opacity: 0,
+              scale: 0
             }}
             animate={{ 
               y: star.y,
               opacity: [0, star.opacity, 0],
+              scale: [0, 1, 0],
               transition: { 
-                duration: 3, 
+                duration: star.duration, 
                 delay: star.delay,
                 repeat: Infinity,
                 repeatType: 'reverse'
@@ -120,28 +106,11 @@ export default function UltimatePortfolioFooter() {
               width: star.size,
               height: star.size,
               borderRadius: '50%',
-              backgroundColor: 'rgba(255,255,255,0.7)'
+              background: 'radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 70%)'
             }}
           />
         ))}
       </div>
-
-      {/* Interactive Cursor Glow */}
-      <motion.div 
-        style={{
-          position: 'fixed',
-          top: -50,
-          left: -50,
-          width: 100,
-          height: 100,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%)',
-          pointerEvents: 'none',
-          zIndex: 50,
-          x: cursorX,
-          y: cursorY
-        }}
-      />
 
       <div className="container mx-auto px-4 relative z-10">
         {/* Main Content Section */}
@@ -157,18 +126,23 @@ export default function UltimatePortfolioFooter() {
               initial={{ x: -100, opacity: 0 }}
               animate={inView ? { x: 0, opacity: 1 } : {}}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-4xl font-bold tracking-wide 
-              bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 
-              bg-clip-text text-transparent"
+              className="text-4xl font-bold tracking-wide"
             >
-              Ayush Upadhyay
+              <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                Ayush Upadhyay
+              </span>
             </motion.h2>
-            <p className="text-gray-400 mt-2 text-sm tracking-wider">
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="text-gray-400 mt-2 text-sm tracking-wider"
+            >
               Digital Innovator | Full Stack Developer | Tech Enthusiast
-            </p>
+            </motion.p>
           </div>
 
-          {/* Social Links */}
+          {/* Enhanced Social Links */}
           <div className="flex space-x-6">
             {socialLinks.map((social) => (
               <motion.a
@@ -179,7 +153,13 @@ export default function UltimatePortfolioFooter() {
                 className="relative group"
                 whileHover={{ 
                   scale: 1.1,
-                  rotate: Math.random() * 10 - 5
+                  rotate: [0, -10, 10, -10, 0],
+                  transition: {
+                    rotate: {
+                      duration: 0.5,
+                      ease: "easeInOut"
+                    }
+                  }
                 }}
                 whileTap={{ scale: 0.95 }}
                 onHoverStart={() => setActiveInteraction(social.name)}
@@ -189,23 +169,28 @@ export default function UltimatePortfolioFooter() {
                   className={`absolute inset-0 bg-gradient-to-r ${social.gradient} 
                     rounded-full opacity-0 group-hover:opacity-70 transition-opacity duration-500`}
                   initial={{ scale: 0 }}
-                  whileHover={{ scale: 1.2 }}
+                  whileHover={{ scale: 1.5 }}
                 />
                 <social.icon 
-                  className="relative z-10 w-8 h-8 text-gray-300 group-hover:text-white"
+                  className="relative z-10 w-8 h-8 text-gray-300 group-hover:text-white 
+                    transition-colors duration-300"
                 />
                 
                 <AnimatePresence>
                   {activeInteraction === social.name && (
                     <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 20 }}
+                      initial={{ opacity: 0, y: 20, scale: 0.8 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 20, scale: 0.8 }}
                       className="absolute -bottom-16 left-1/2 -translate-x-1/2 
-                        bg-black/80 text-white text-xs px-3 py-2 rounded-md 
-                        shadow-lg border border-white/10 w-48 text-center"
+                        bg-black/90 text-white text-xs px-4 py-2 rounded-lg 
+                        shadow-lg border border-white/20 w-48 text-center
+                        backdrop-blur-sm"
                     >
                       {social.description}
+                      <div className="absolute -top-2 left-1/2 -translate-x-1/2 
+                        border-l-8 border-r-8 border-b-8 
+                        border-transparent border-b-black/90" />
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -214,80 +199,70 @@ export default function UltimatePortfolioFooter() {
           </div>
         </motion.div>
 
-        {/* Interactive Sections */}
-        <motion.div 
-          initial={{ opacity: 0, y: 50 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="mt-12 grid md:grid-cols-3 gap-6"
-        >
-          {interactionSections.map((section) => (
-            <motion.div
-              key={section.title}
-              className="bg-white/5 rounded-xl p-6 border border-white/10 
-              hover:border-blue-500/50 transition-all group cursor-pointer overflow-hidden"
-              whileHover={{ 
-                scale: 1.05,
-                boxShadow: '0 10px 25px rgba(0,0,255,0.2)'
-              }}
-              onHoverStart={() => setActiveInteraction(section.title)}
-              onHoverEnd={() => setActiveInteraction(null)}
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <motion.div 
-                    className={`p-3 rounded-full bg-gradient-to-r ${section.gradient} 
-                    group-hover:rotate-12 transition-transform`}
-                  >
-                    <section.icon className="w-6 h-6 text-white" />
-                  </motion.div>
-                  <h3 className="text-xl font-semibold">{section.title}</h3>
-                </div>
-                <motion.div
-                  whileHover={{ rotate: 90 }}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  <ArrowRight className="w-6 h-6 text-blue-500" />
-                </motion.div>
-              </div>
-              
-              <AnimatePresence>
-                {activeInteraction === section.title && (
-                  <motion.p
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="text-gray-400 text-sm mt-4 overflow-hidden"
-                  >
-                    {section.description}
-                  </motion.p>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Contact and Final Section */}
+        {/* Enhanced Get in Touch Button */}
         <motion.div 
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="mt-12 text-center"
+          className="mt-16 text-center"
         >
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="inline-flex items-center space-x-3 
-            bg-white/10 px-6 py-3 rounded-full 
-            hover:bg-blue-500/20 transition-all cursor-pointer"
+          <motion.a
+            href="https://ayushupadhyay.carrd.co"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative inline-block"
+            onMouseEnter={() => setIsHoveringCta(true)}
+            onMouseLeave={() => setIsHoveringCta(false)}
+            animate={floatingAnimation}
           >
-            <Send className="w-5 h-5 text-blue-400" />
-            <span className="text-gray-300 font-medium">Get in Touch</span>
-          </motion.div>
+            <motion.div
+              className="relative flex items-center space-x-3 
+                bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600
+                px-8 py-4 rounded-full cursor-pointer
+                shadow-lg shadow-blue-500/20 group
+                hover:shadow-xl hover:shadow-blue-500/30 
+                transition-all duration-300"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Send className="w-5 h-5 text-white group-hover:rotate-12 transition-transform duration-300" />
+              <span className="text-white font-medium">Get in Touch</span>
+              <ExternalLink className="w-4 h-4 text-white/70 ml-2 group-hover:translate-x-1 
+                transition-transform duration-300" />
+              
+              {/* Sparkle Effects */}
+              <AnimatePresence>
+                {isHoveringCta && sparklePositions.map((pos, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ 
+                      opacity: [0, 1, 0],
+                      scale: [0, 1, 0],
+                      x: [pos.x, pos.x * 1.5],
+                      y: [pos.y, pos.y * 1.5]
+                    }}
+                    exit={{ opacity: 0, scale: 0 }}
+                    transition={{ duration: 0.75, delay: index * 0.1 }}
+                    className="absolute"
+                  >
+                    <Sparkles className="w-4 h-4 text-white" />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </motion.div>
+          </motion.a>
           
-          <p className="text-gray-500 text-sm mt-4">
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="text-gray-500 text-sm mt-8"
+          >
             © 2024 Ayush Upadhyay. All rights reserved. 
-            Designed with passion and precision.
-          </p>
+            <br />
+            <span className="text-gray-600">Crafted with passion and precision</span>
+          </motion.p>
         </motion.div>
       </div>
     </footer>
